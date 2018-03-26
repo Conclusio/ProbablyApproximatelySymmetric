@@ -1,8 +1,10 @@
 function [nFold,representativeConfig,representativeScore] = ...
     DetectRotationAxisFold(lat,lon,Img,roiMask,params)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% - nFold ... the fold of the rotation or zero if revolutionary rotation
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-tol = 1e7;
+tol = 1e7; % precison (for the decimal place count)
 maxRotations = ceil(2 * pi / params.minAngleBetweenSymmetries);
 configTemplate = [0 0 0 1 lat lon 0];
 
@@ -91,7 +93,7 @@ representativeConfig = configTemplate;
 if (nFold == -1)
 % revolutionary
 representativeScore = mean(meanScores);
-representativeConfig(7) = -2*pi/7;
+representativeConfig(7) = -2*pi/7; % Note SPE: I really don't understand this choice. Why not zero?
     nFold = 0;
 else
     representativeScore = meanScores(nFold);

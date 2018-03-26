@@ -37,7 +37,7 @@ end
 
 if (params.defineYourOwnShape)
     close all
-        shapeName = 'icosahedron';
+    shapeName = 'icosahedron';
 %     shapeName = 'dodecahedron';
 
     params.breakSearchByThreshold = true;
@@ -126,7 +126,7 @@ allErrors = [];
 
 for i = 1 : 1000
     if (params.constantNumberOfBestSymmetries)
-        goodSymmetryThreshold = 1;
+        goodSymmetryThreshold = 1; % basically means: ignore threshold if any
         if (nDetected >= params.maxNumberOfBestSymmetries)
             break
         end
@@ -236,7 +236,7 @@ if (debug)
     saveas(dod_h,[fileNamePrefix 'dode.png'])
 end
 %% saving
-close all
+%close all
 statisticsArray = [statisticsArray{:}];
 save([fileNamePrefix '_info_.mat'],'statisticsArray','K','ATV','binATV','gridSize','bingridSize',...
     'detectedSymmetries','params');
@@ -267,8 +267,8 @@ for symmInd = 1 : nDetected
 
     %% saving
     axis off
-    saveas(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd) '.png']);
-    saveas(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd) '.fig']);
+    saveas(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd,'%02i') '.png']);
+    saveas(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd,'%02i') '.fig']);
 
     if params.createEpsFile
         saveas(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd) '.eps'],'epsc');
@@ -280,7 +280,7 @@ for symmInd = 1 : nDetected
     end
 
 end
-close all
+%close all
 
 
 

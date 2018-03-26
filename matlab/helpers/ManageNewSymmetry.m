@@ -64,6 +64,13 @@ else
     [rotationFold,representativeConfig,representativeScore] = ...
         DetectRotationAxisFold(lat,lon,Img,roiMask,params);
     
+    % Note SPE: So the following will override the config and errors with
+    % new calculated ones. In case of a revolutionary rotation it will
+    % represent an average over tested rotations around the full spectrum.
+    % In case of a fold-rotation is will be the precise config for this
+    % fold. The fullError although is not really a fullError, but is more a
+    % sampled or average error. To be precise one must re-calculate the
+    % full error with this precise new configuration.
     detectedSymmetries(end).rotationFold = rotationFold;
     detectedSymmetries(end).fullError    = representativeScore;
     detectedSymmetries(end).sampledError = representativeScore;

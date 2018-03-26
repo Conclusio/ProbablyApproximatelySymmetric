@@ -1,4 +1,16 @@
 function [fullError,sampledError] = CalcFullAndSampledError3D(I1,I2,config,roiMask,fullOrSampled,epsilon)
+%
+% Calculates either full or sampled error or both depending on
+% 'fullOrSampled' parameter. Parameter 'config' typically specifies only
+% one config to test against. Full error means take the config and test it
+% against all points (typically a lot) in the ROI. Sampled error means take
+% the config and test against random sampled points (depending on epsilon).
+% The error is calculated by first creating the affine transformation
+% matrix from the config and then using this matrix against the points and
+% measuring the distortion between the transformed points and the actual
+% point at that location. The distortion is calculated per config.
+%
+
 
 computeFull = 0;
 computeSampled = 0;

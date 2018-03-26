@@ -1,4 +1,4 @@
-function [bounds,steps,averageVariation] = DetermineGridBoundsAndSteps(I1,I1_radius,delta,roiMask)
+function [bounds,steps,averageVariation] = DetermineGridBoundsAndSteps(I1,I1_radius,delta,roiMask,translationOffset)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 [h,w,d] = size(I1);
@@ -14,12 +14,20 @@ r1z = 0.5*(d-1);
 %% search limits - add reflections!!!
 c = 1; % i.e. no scale
 
-minTx = -(r2x-r1x/c);
-maxTx = r2x-r1x/c;
-minTy = -(r2y-r1y/c);
-maxTy = r2y-r1y/c;
-minTz = -(r2z-r1z/c);
-maxTz = r2z-r1z/c;
+% old code (always zero)
+% minTx = -(r2x-r1x/c);
+% maxTx = r2x-r1x/c;
+% minTy = -(r2y-r1y/c);
+% maxTy = r2y-r1y/c;
+% minTz = -(r2z-r1z/c);
+% maxTz = r2z-r1z/c;
+
+minTx = -translationOffset;
+maxTx = translationOffset;
+minTy = -translationOffset;
+maxTy = translationOffset;
+minTz = -translationOffset;
+maxTz = translationOffset;
 minR = -pi;
 maxR = pi;
 minS = 1/c;

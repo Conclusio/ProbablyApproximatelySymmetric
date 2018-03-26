@@ -1,5 +1,7 @@
 function [configs,gridSize] = CreateListOfConfigs3D(bounds,steps,params,onlyGridSize)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% - configs ... matrix of N x 7 with each row being [tx,ty,tz,s,latitudes(latIndex),longitude,roll] and N <= gridSize
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 allowReflections = params.allowReflections;
 onlyReflections = params.onlyReflections;
 

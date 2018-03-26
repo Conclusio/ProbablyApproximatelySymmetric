@@ -72,12 +72,18 @@ if plotMesh
         plotFun(shape1_trans,color_I1_trans,facealpha,'shape_1_trans')
     else
         dtVals  = GetMeshErrorVals(shape1_trans,shape2);
-        pathcH = trisurf(shape2.TRIV, shape2.Y, shape2.X, shape2.Z,dtVals,'displayname','shape_error');
+        pathcH = trisurf(shape2.TRIV, shape2.Y, shape2.X, shape2.Z,dtVals,'displayname','shape_error','facealpha',0.7);
         set(pathcH,'edgecolor','none')
         shape2_radius = (size(shape2.G,1)-1)/2; % <-- assumes boxified shape
         set(gca,'cLim',[0 shape2_radius/10]);
         shading interp
     end
+    
+    % plot center of gravity:
+    idx = find(I1);
+    [Ys,Xs,Zs] = ind2sub(size(I1),idx);
+    COG = round(mean([Ys,Xs,Zs]));
+    scatter3(COG(1), COG(2), COG(3), 100, 'MarkerEdgeColor', 'k', 'MarkerFaceColor', 'y');
 
     if (~isempty(optA))
         error('not implemented for mesh')
@@ -171,6 +177,9 @@ r1x = 0.5*(imSize(2)-1);
 r1y = 0.5*(imSize(1)-1);
 r1z = 0.5*(imSize(3)-1);
 
+tx  =  config(1);
+ty  =  config(2);
+tz  =  config(3);
 s   =  config(4);
 lat = -config(5)+pi/2;
 lon =  config(6);
@@ -215,6 +224,9 @@ else
         r1x+1 + ortho1(1)*GRD(:,1) + ortho2(1)*GRD(:,2),...
         r1y+1 + ortho1(2)*GRD(:,1) + ortho2(2)*GRD(:,2),...
         r1z+1 + ortho1(3)*GRD(:,1) + ortho2(3)*GRD(:,2)];
+    
+    % add translational component:
+    fv.vertices = fv.vertices + repmat([tx ty tz] / 2, size(fv.vertices, 1), 1);
     p = patch(fv);
     facealpha = 0.5;
     set(p,'faceColor','r','facealpha',facealpha,'edgeColor','none','displayname','reflection_plane')

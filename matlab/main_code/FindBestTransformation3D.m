@@ -1,6 +1,11 @@
 function [optError,bestConfig,bestA,optA,fullError,sampledError,overlapError,statistics] = ...
     FindBestTransformation3D(~,bounds,steps,I1,I2,roiMask,params)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% - optError ... deprecated
+% - optA ... deprecated
+% - overlapError ... deprecated
+% - sampledError ... best distance
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 if ~exist('params','var') || isempty(params) || ~isstruct(params)
     params = struct();
@@ -124,8 +129,9 @@ while (1)
         %  too close to previously detected symmetries
         idx_to_keep = FindConfigsFarFromOnesInList(configs,detectedSymmetries,minAngleBetweenSymmetries);
     else
-        idx_to_keep = find(insiders);
+        idx_to_keep = find(insiders); % useless code, since 'insiders' array always contains only ones (see C++ code) and variable 'minAngleBetweenSymmetries' always exists
     end
+
     CloseConfigsDetection_time = toc(CloseConfigsDetection);
     matrixConfigs_mex = matrixConfigs_mex(:,idx_to_keep);
     origNumConfigs = size(configs,1);
@@ -251,7 +257,8 @@ while (1)
                 expandedConfigs = ExpandConfigsFull3D(goodConfigs,steps,bounds,level,deltaFact);
         end
 
-        configs = [goodConfigs ; expandedConfigs];
+        %configs = [goodConfigs ; expandedConfigs]; % Note SPE: This is not useful. The expandedConfigs already contain the goodConfigs if using 'fullExpansion'. And 'randomExpansion' is not possible, since the code is not available
+        configs = expandedConfigs; % corrected
         if (any(isnan(expandedConfigs(:))))
             error('there are NaNs here!')
         end
@@ -323,12 +330,12 @@ goodConfigs = configs(distances <= thresh, :); % bestDist + levelPrecision,:);
 numConfigs = size(goodConfigs,1);
 while (numConfigs > 23000)
     thresh = thresh * 0.99;
-    disp('CHANGING THRESHOLD - TOO MANY CONFIGS!');
+    %disp('CHANGING THRESHOLD - TOO MANY CONFIGS!'); % NOTE SPE: not that interesting
     goodConfigs = configs(distances <= thresh, :); % bestDist + levelPrecision,:);
     numConfigs = size(goodConfigs,1);
 end
 
-if (thresh < min(distances))
+if (thresh < min(distances)) % NOTE SPE: this IF does not make much sense. min(distances) is 'bestDist' and the threshold cannot be below the best distance except if delta is negative, which is shouldn't be
     thresh = min(distances);
     goodConfigs = configs(distances <= thresh, :); % bestDist + levelPrecision,:);
     numConfigs = size(goodConfigs,1);
@@ -351,7 +358,7 @@ if (percentage > 0.022)
     repeatOrigGrid = 1;
 end
 
-if (~isempty(bestGridVec))
+if (~isempty(bestGridVec)) % Note SPE: bestGridVec is always empty
     [exists,~] = IsMemberApprox(goodConfigs,bestGridVec,1000*eps);
     if (~exists)
         warning('problem with configs');

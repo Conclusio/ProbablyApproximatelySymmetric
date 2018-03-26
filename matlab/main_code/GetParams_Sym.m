@@ -12,7 +12,7 @@ p = AddField(p,'createEpsFile',false);
 
 p = AddField(p,'defineYourOwnShape',true);
 p = AddField(p,'calcFullError',true);
-p = AddField(p,'findRollMultiplicities',false);
+p = AddField(p,'findRollMultiplicities',false); % unused
 
 % precisions
 p = AddField(p,'epsilon',0.12);
@@ -48,6 +48,8 @@ p = AddField(p,'expandDetectedSymmetry',true);
 p = AddField(p,'bnbMaxLevel',inf);
 p = AddField(p,'allowRestart',true);
 
+% Translation
+p = AddField(p,'translationOffset',0); % search space for translations (+/- translationOffset)
 
 % legacy parameters
 p = AddField(p,'optA',[]); 
