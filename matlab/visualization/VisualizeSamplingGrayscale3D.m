@@ -177,8 +177,8 @@ r1x = 0.5*(imSize(2)-1);
 r1y = 0.5*(imSize(1)-1);
 r1z = 0.5*(imSize(3)-1);
 
-tx  =  config(1);
-ty  =  config(2);
+tx  =  config(2);
+ty  =  config(1);
 tz  =  config(3);
 s   =  config(4);
 lat = -config(5)+pi/2;
