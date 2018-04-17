@@ -250,7 +250,7 @@ end
 
 function plot_symmetries(shapeIn,shapeName,detectedSymmetries,fileNamePrefix,params)
 %%%%%%%%%%%%%%%%%%%%%%%%%
-close all
+%close all
 nDetected = numel(detectedSymmetries);
 for symmInd = 1 : nDetected
 
@@ -278,7 +278,8 @@ for symmInd = 1 : nDetected
         axis off;title('');
         FixAndExportToBlender(gcf,[fileNamePrefix '_symmetry_number_' num2str(symmInd) '.wrl'])
     end
-
+    
+    close(gcf);
 end
 %close all
 
