@@ -6,7 +6,9 @@ function [detectedSymmetries,statisticsArray] = ...
 % close all
 % clear all
 % clc
-dbstop if error
+if ~isdeployed
+    dbstop if error
+end
 set(0,'DefaultFigureWindowStyle','docked')
 
 rand( 'seed',0) %#ok<RAND>
